@@ -22,6 +22,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm audit --prod --audit-level=high
-      - run: pnpm build
-        run: pnpm exec playwright install --with-deps chromium
-        run: pnpm test:e2e
+      - run: pnpm exec playwright install --with-deps chromium
+      # Builds the app and runs the browser tests against it.
+      - run: pnpm test:e2e
