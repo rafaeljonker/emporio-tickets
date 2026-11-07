@@ -107,3 +107,17 @@ test('the header counts open tickets and follows deletes', async ({ page }) => {
   await deleteTicket(page, title);
   await expect(page.getByText('25 open tickets')).toBeVisible();
 });
+
+test('after a mouse delete only the hovered row is highlighted', async ({ page }) => {
+  const title = `Highlight ${Date.now()}`;
+  await page.goto('/tickets/new');
+  await page.getByLabel('Title').fill(title);
+  await page.getByRole('button', { name: 'Create ticket' }).click();
+  await expect(page.getByRole('listitem').first()).toContainText(title);
+  await deleteTicket(page, title);
+  await page.getByRole('listitem').nth(3).hover();
+  const highlighted = await page
+    .locator('li > div > div.group')
+    .evaluateAll((rows) => rows.filter((row) => getComputedStyle(row).boxShadow !== 'none').length);
+  expect(highlighted).toBe(1);
+});

@@ -19,6 +19,11 @@ const title = () => screen.getByLabelText('Title');
 const submit = (label: RegExp) => screen.getByRole('button', { name: label });
 
 describe('TicketForm (create)', () => {
+  it('suggests what a title looks like', () => {
+    renderUiWithTrpc(<TicketForm mode="create" />);
+    expect(title().getAttribute('placeholder')).toBe('e.g. B string snapped on a new Giannini');
+  });
+
   it('creates a ticket, resets the list cache and goes back to the board', async () => {
     const { store, queryClient } = renderUiWithTrpc(<TicketForm mode="create" />);
     const removeQueries = vi.spyOn(queryClient, 'removeQueries');
