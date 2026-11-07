@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createTRPCClient, localLink } from '@trpc/client';
 import { renderHook } from '@testing-library/react';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import { appRouter, type AppRouter } from '@/server/root';
 import { createTicketStore, type TicketStore } from '@/server/tickets/store';
 import { TRPCProvider } from '@/trpc/client';
@@ -16,7 +16,7 @@ export function renderWithTrpc<T>(hook: () => T, opts: { store?: TicketStore; qu
   const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-        {children}
+        <Suspense fallback={null}>{children}</Suspense>
       </TRPCProvider>
     </QueryClientProvider>
   );
