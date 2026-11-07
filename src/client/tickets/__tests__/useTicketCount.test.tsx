@@ -20,6 +20,6 @@ describe('useTicketCount', () => {
         old && { ...old, pages: old.pages.map((p) => ({ ...p, total: 1 })) },
       );
     });
-    expect(result.current?.count.label).toBe('1 open ticket');
+    await waitFor(() => expect(result.current?.count.label).toBe('1 open ticket'));
   });
 });

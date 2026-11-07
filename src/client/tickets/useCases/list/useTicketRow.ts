@@ -19,9 +19,19 @@ export function useTicketRow(ticket: Ticket) {
   // A second confirm in the same tick must not send a second delete.
   const inFlight = useRef(false);
 
+  const listKey = trpc.ticket.list.infiniteQueryKey({ limit: PAGE_SIZE });
+
+  /** The row that takes this one's place, so keyboard focus doesn't fall to <body>. */
+  function neighborId(): string | undefined {
+    const items = queryClient.getQueryData(listKey)?.pages.flatMap((page) => page.items) ?? [];
+    const index = items.findIndex((item) => item.id === ticket.id);
+    return (items[index + 1] ?? items[index - 1])?.id;
+  }
+
   function removeFromList() {
+    const next = neighborId();
     // Keyset cursors make local removal safe: later pages don't shift.
-    queryClient.setQueryData(trpc.ticket.list.infiniteQueryKey({ limit: PAGE_SIZE }), (old) =>
+    queryClient.setQueryData(listKey, (old) =>
       old && {
         ...old,
         pages: old.pages.map((page) => ({
@@ -31,6 +41,10 @@ export function useTicketRow(ticket: Ticket) {
         })),
       },
     );
+    requestAnimationFrame(() => {
+      const row = next ? document.getElementById(`ticket-${next}`) : null;
+      (row ?? document.querySelector<HTMLElement>('a[href="/tickets/new"]'))?.focus();
+    });
   }
 
   function finishDelete() {
