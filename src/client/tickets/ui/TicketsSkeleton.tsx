@@ -10,13 +10,3 @@ export function TicketSkeletonRow() {
     </div>
   );
 }
-
-export function TicketsSkeleton() {
-  return (
-    <div className="mt-2" aria-busy="true" aria-label="Loading tickets">
-      {Array.from({ length: 5 }, (_, i) => (
-        <TicketSkeletonRow key={i} />
-      ))}
-    </div>
-  );
-}

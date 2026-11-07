@@ -7,13 +7,14 @@ import { TRPCReactProvider } from '@/trpc/client';
 import './globals.css';
 
 // next/font self-hosts both families at build time (same intent as the brand's Fontsource rule).
+// Latin covers every string in the app (English copy, Portuguese names). WONK stays at its default 0.
 const fraunces = Fraunces({
-  subsets: ['latin', 'latin-ext'],
-  axes: ['SOFT', 'WONK', 'opsz'],
+  subsets: ['latin'],
+  axes: ['SOFT', 'opsz'],
   style: ['normal', 'italic'],
   variable: '--font-fraunces',
 });
-const sourceSans = Source_Sans_3({ subsets: ['latin', 'latin-ext'], variable: '--font-source-sans' });
+const sourceSans = Source_Sans_3({ subsets: ['latin'], variable: '--font-source-sans' });
 
 export const metadata: Metadata = {
   title: { default: 'Tickets · Empório', template: '%s · Empório' },

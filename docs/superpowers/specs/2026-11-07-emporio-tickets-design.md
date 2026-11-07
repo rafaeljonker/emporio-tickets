@@ -325,3 +325,11 @@ CI (`.github/workflows/ci.yml`, one job, actions pinned to SHA, `permissions: co
 
 ## 10. Left to the builder
 Seed ticket wording beyond the newest three, skeleton proportions, exact spacing within the approved mockups, commit granularity within the TDD pairs.
+
+## 11. As built (deviations from this design, each recorded in the execution ledger)
+- **No `(board)/loading.tsx`.** With it, the list streamed into a hidden Suspense boundary that only JavaScript reveals, so the JS-disabled SSR test failed. The store answers in milliseconds, so the page now renders the list straight into the HTML. Skeleton rows remain for the next page.
+- **Dates** read "Nov 7, 10:42 AM" (`month: 'short', day, hour, minute`), matching the approved mockup; `dateStyle: 'medium'` would add the year.
+- **Touch rows** show the three actions always instead of a menu button (no dropdown primitive for one use).
+- **Paper grain** is a pre-rendered PNG tile: the SVG `feTurbulence` filter cost ~4 s of blocking time on Lighthouse's throttled CPU. **Fonts** load only the Latin subset and Fraunces without the WONK axis (580 KB → 293 KB).
+- **Row links** don't prefetch (up to 1,000 rows); **e2e** runs on port 3100.
+- `next>postcss` is overridden to `^8.5.18` to clear two high advisories pinned by Next 15.5.

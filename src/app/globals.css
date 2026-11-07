@@ -217,7 +217,8 @@
 /* STYLE.md → Implementation: surfaces, type treatments, animation recipes */
 .surface-paper, .surface-wood { position: relative; isolation: isolate; }
 .surface-paper::before, .surface-wood::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.surface-paper::before { background: var(--grain-paper); opacity: .05; mix-blend-mode: multiply; }
+/* Pre-rendered noise tile: the SVG feTurbulence filter cost ~3.5 s of blocking time on throttled CPUs. */
+.surface-paper::before { background: url("/grain.png") repeat; background-size: 200px 200px; opacity: .045; }
 .surface-wood::before { background: var(--grain-wood); }
 .dark .surface-paper::before { display: none; }
 @media (prefers-reduced-data: reduce) { .surface-paper::before, .surface-wood::before { display: none; } }
