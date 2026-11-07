@@ -33,7 +33,7 @@ export function TicketRow({ ticket }: TicketRowProps) {
     >
       <div className="min-h-0 overflow-hidden">
         <div
-          className={`group relative border-b border-border hover:bg-foreground/[.04] hover:shadow-[inset_3px_0_0_var(--accent)] focus-within:bg-foreground/[.04] focus-within:shadow-[inset_3px_0_0_var(--accent)] ${isDeleting ? 'opacity-45' : ''}`}
+          className={`group relative border-b border-border hover:bg-foreground/[.04] hover:shadow-[inset_3px_0_0_var(--accent)] has-[:focus-visible]:bg-foreground/[.04] has-[:focus-visible]:shadow-[inset_3px_0_0_var(--accent)] ${isDeleting ? 'opacity-45' : ''}`}
         >
           <Link
             id={`ticket-${ticket.id}`}
@@ -55,11 +55,11 @@ export function TicketRow({ ticket }: TicketRowProps) {
               <TicketDate createdAt={ticket.createdAt} className="mt-1.5 block md:hidden" />
             )}
           </Link>
-          {/* Desktop: the date gives way to the actions on hover or keyboard focus. */}
-          <span className="pointer-events-none absolute top-[18px] right-3.5 hidden md:block group-focus-within:invisible group-hover:invisible">
+          {/* Desktop: the date gives way to the actions on hover or keyboard focus (not focus moved by code after a mouse action). */}
+          <span className="pointer-events-none absolute top-[18px] right-3.5 hidden md:block group-has-[:focus-visible]:invisible group-hover:invisible">
             {isDeleting ? <span className="text-[13px] text-muted-foreground">Deleting…</span> : <TicketDate createdAt={ticket.createdAt} />}
           </span>
-          <div className="absolute top-3 right-2 flex gap-0.5 md:opacity-0 md:group-focus-within:opacity-100 md:group-hover:opacity-100 [@media(hover:none)]:opacity-100">
+          <div className="absolute top-3 right-2 flex gap-0.5 md:opacity-0 md:group-has-[:focus-visible]:opacity-100 md:group-hover:opacity-100 [@media(hover:none)]:opacity-100">
             <TakeoverDialog title={ticket.title} />
             <Button asChild variant="ghost" size="icon" className={iconButton}>
               <Link href={editHref(ticket.id)} prefetch={false} aria-label={`Edit ${ticket.title}`}>
