@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Empório Tickets — direction A, all screens</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+:root{
+  --background:#FAF4EA;--foreground:#3B2A1E;--card:#E9D8B8;--popover:#FFFCF6;
+  --primary:#A54A29;--primary-foreground:#FAF4EA;--primary-hover:#93401F;
+  --accent:#C98A2B;--muted-foreground:#6B5444;--destructive:#9A2E24;
+  --border:#D8C29C;--input:#6B5444;--ring:#3B2A1E;--success:#46602B;--warning:#8A5A14;
+  --user-bubble:#3B2A1E;--user-bubble-foreground:#FAF4EA;
+  --rail:#3B2A1E;--rail-foreground:#FAF4EA;--rail-muted:#E9D8B8;--rail-rule:#C98A2B;
+  --shadow-sm:0 1px 2px rgb(59 42 30/.06);--shadow-lg:0 8px 20px rgb(59 42 30/.10);--shadow-xl:0 16px 32px rgb(59 42 30/.12);
+  --ease:cubic-bezier(.33,1,.68,1);
+  --font-display:"Fraunces",Georgia,serif;
+  --font-sans:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --grain-paper:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .23  0 0 0 0 .16  0 0 0 0 .12  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --grain-wood:repeating-linear-gradient(92deg,rgb(59 42 30/.035) 0 1px,transparent 1px 7px),repeating-linear-gradient(88deg,rgb(59 42 30/.025) 0 2px,transparent 2px 19px);
+}
+*{box-sizing:border-box}
+body{margin:0;background:#EFE6D6;color:var(--foreground);font:400 16px/1.5 var(--font-sans);-webkit-font-smoothing:antialiased}
+.tnum{font-variant-numeric:tabular-nums}
+.display{font-family:var(--font-display);font-variation-settings:"SOFT" 100,"WONK" 0;letter-spacing:-.025em;font-weight:600;text-wrap:balance}
+.tagline{font-family:var(--font-display);font-style:italic;font-weight:400;color:var(--muted-foreground)}
+.muted{color:var(--muted-foreground)}
+.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.i.sm{width:16px;height:16px}
+.surface-paper{position:relative;isolation:isolate;background:var(--background)}
+.surface-paper::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--grain-paper);opacity:.05;mix-blend-mode:multiply}
+.surface-wood{position:relative;isolation:isolate}
+.surface-wood::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--grain-wood);border-radius:inherit}
+
+/* page chrome (mockup only) */
+.mk-page{max-width:1240px;margin:0 auto;padding:40px 24px 90px}
+.mk-intro h1{font:600 28px/1.2 var(--font-display);font-variation-settings:"SOFT" 100;margin:0 0 6px}
+.mk-intro p{margin:0;color:var(--muted-foreground);max-width:76ch}
+.mk-sec{margin-top:44px}
+.mk-sec>h2{margin:0 4px 4px;font:600 20px/1.3 var(--font-sans);display:flex;gap:10px;align-items:baseline}
+.mk-sec>h2 span{font:600 13px var(--font-sans);color:var(--muted-foreground)}
+.mk-sec>p{margin:0 4px 14px;color:var(--muted-foreground);font-size:15px;max-width:90ch}
+.mk-browser{border-radius:12px;overflow:hidden;box-shadow:var(--shadow-xl);border:1px solid var(--border);background:var(--background)}
+.mk-bar{height:34px;background:#E7DCC9;display:flex;align-items:center;gap:7px;padding:0 12px;border-bottom:1px solid var(--border)}
+.mk-dot{width:11px;height:11px;border-radius:99px;background:#CDBB9C}
+.mk-url{margin-left:14px;font:13px var(--font-sans);color:var(--muted-foreground);background:#F3EADB;border-radius:6px;padding:2px 12px}
+.mk-vp{position:relative;overflow:hidden}
+.mk-row2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.mk-phone{width:390px;border-radius:36px;border:10px solid #3B2A1E;overflow:hidden;box-shadow:var(--shadow-xl);background:var(--background)}
+.mk-callouts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 24px;margin:14px 6px 0;font-size:14.5px;color:var(--muted-foreground)}
+.mk-callouts b{color:var(--foreground)}
+
+/* rail */
+.rail{background:var(--rail);color:var(--rail-foreground);border-bottom:3px solid var(--rail-rule)}
+.rail-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:12px 24px}
+.rail img{width:40px;height:40px;border-radius:999px;display:block}
+.rail-title{font-weight:600;line-height:1.2}
+.rail-sub{font-size:14px;color:var(--rail-muted)}
+.rail-back{margin-left:auto;color:var(--rail-foreground);font-weight:600;font-size:15px;display:flex;gap:6px;align-items:center;padding:8px 14px;border-radius:999px}
+
+/* buttons & atoms */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 22px;border-radius:999px;border:0;font:600 16px/1 var(--font-sans);white-space:nowrap}
+.btn-primary{background:var(--primary);color:var(--primary-foreground)}
+.btn-primary.pending{background:var(--primary-hover)}
+.btn-secondary{background:var(--card);color:var(--foreground);box-shadow:inset 0 0 0 1px var(--input)}
+.btn-ghost{background:transparent;color:var(--foreground)}
+.btn-destructive{background:var(--destructive);color:var(--primary-foreground)}
+.btn-link{background:none;border:0;padding:0;color:var(--foreground);text-decoration:underline;text-underline-offset:3px;font:600 16px var(--font-sans)}
+.kbd{font:600 12px var(--font-sans);padding:1px 6px;border-radius:5px;background:rgb(250 244 234/.22)}
+.icon-btn{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;color:var(--muted-foreground);background:transparent;border:0}
+.icon-btn.on{background:var(--card);color:var(--foreground)}
+.icon-btn.danger.on{color:var(--primary)}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:2px 10px;font:600 14px var(--font-sans);background:var(--card)}
+.focus{outline:2px solid var(--ring);outline-offset:2px}
+
+/* list (A) */
+.a-wrap{max-width:880px;margin:0 auto;padding:40px 24px 32px}
+.a-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.a-top h1{margin:0;font-size:40px;line-height:1.1}
+.a-top .tagline{margin:6px 0 0;font-size:18px}
+.a-meta{display:flex;align-items:center;gap:12px;margin-top:14px;font-size:14px}
+.a-row{display:grid;grid-template-columns:1fr auto;gap:20px;padding:18px 14px;border-bottom:1px solid var(--border);align-items:start}
+.a-row.hover{background:rgb(59 42 30/.04);box-shadow:inset 3px 0 0 var(--accent)}
+.a-row.leaving{opacity:.45}
+.a-row h3{margin:0;font-size:17px;font-weight:600;line-height:1.35}
+.a-row p{margin:4px 0 0;color:var(--muted-foreground);font-size:15px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:64ch}
+.a-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:150px}
+.a-time{font-size:13px;color:var(--muted-foreground);white-space:nowrap}
+.a-actions{display:flex;gap:2px}
+.skel{display:grid;grid-template-columns:1fr auto;gap:20px;padding:18px 14px;border-bottom:1px solid var(--border)}
+.bar{background:var(--card);border-radius:8px;height:14px}
+.list-end{display:flex;align-items:center;gap:16px;margin:28px 0 4px;color:var(--muted-foreground);font-size:15px}
+.list-end::before,.list-end::after{content:"";flex:1;height:1px;background:var(--border)}
+.inline-fail{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border-radius:12px;padding:12px 12px 12px 16px;margin-top:20px;font:600 15px var(--font-sans)}
+.inline-fail span{display:flex;gap:8px;align-items:center;color:var(--destructive)}
+
+/* toast */
+.toast{display:flex;align-items:center;gap:10px;background:var(--popover);border:1px solid var(--border);box-shadow:var(--shadow-lg);border-radius:12px;padding:12px 16px;font-size:16px;width:max-content}
+.toast.float{position:absolute;left:50%;bottom:24px;transform:translateX(-50%)}
+.toast .ok{color:var(--success)} .toast .bad{color:var(--destructive)}
+
+/* dialog */
+.backdrop{position:absolute;inset:0;background:rgb(59 42 30/.4);display:grid;place-items:center;padding:24px}
+.dialog{width:100%;max-width:32rem;background:var(--popover);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-xl);overflow:hidden}
+.dialog.wide{max-width:36rem}
+.d-head{padding:20px 56px 14px 20px;border-bottom:1px solid var(--border);position:relative}
+.d-head h2{margin:0;font-size:21px;line-height:1.25}
+.d-head p{margin:6px 0 0;font-size:15px;color:var(--muted-foreground)}
+.d-close{position:absolute;top:10px;right:10px}
+.d-body{padding:20px}
+.d-actions{display:flex;justify-content:flex-end;gap:8px;padding:0 20px 20px}
+
+/* form */
+.f-wrap{max-width:36rem;margin:0 auto;padding:36px 24px 40px}
+.crumb{display:flex;gap:6px;align-items:center;font-size:15px;color:var(--muted-foreground);margin-bottom:14px}
+.f-wrap h1{margin:0;font-size:34px;line-height:1.15}
+.f-wrap .tagline{margin:6px 0 0;font-size:17px}
+.f-card{margin-top:24px;background:var(--card);border-radius:12px;padding:28px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field+.field{margin-top:20px}
+.lbl{font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+.lbl small{font-weight:400;font-size:14px;color:var(--muted-foreground)}
+.input,.textarea{width:100%;border:1px solid var(--input);border-radius:8px;background:var(--popover);color:var(--foreground);font:16px/1.5 var(--font-sans);padding:0 12px}
+.input{height:44px;display:flex;align-items:center}
+.textarea{padding:10px 12px;min-height:132px}
+.input.err{border-color:var(--destructive);box-shadow:inset 0 0 0 1px var(--destructive)}
+.hint{font-size:14px;color:var(--muted-foreground);display:flex;justify-content:space-between}
+.ferr{font:600 14px var(--font-sans);color:var(--destructive);display:flex;gap:6px;align-items:center}
+.f-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:24px}
+.banner{display:flex;gap:10px;align-items:flex-start;background:var(--popover);border-radius:12px;padding:12px 14px;box-shadow:inset 0 0 0 1px var(--border);color:var(--destructive);font-weight:600;margin-top:20px}
+.banner .muted{font-weight:400}
+
+/* takeover */
+.t-meta{display:flex;justify-content:space-between;font-size:14px;color:var(--muted-foreground);margin-bottom:12px}
+.thread{position:relative;border-radius:12px;background:var(--background);box-shadow:inset 0 0 0 1px var(--border);padding:16px;display:flex;flex-direction:column;gap:8px;height:300px;overflow:hidden}
+.bub{max-width:78%;border-radius:21.6px;padding:9px 15px;font-size:15px;line-height:1.4}
+.bub.cust{align-self:flex-end;background:var(--user-bubble);color:var(--user-bubble-foreground);border-bottom-right-radius:8px}
+.bub.agent{align-self:flex-start;background:var(--card);border-bottom-left-radius:8px}
+.divider{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted-foreground);margin:4px 0}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
+.blurred{filter:blur(5px);opacity:.7}
+.lock{position:absolute;inset:auto 0 0 0;height:205px;background:linear-gradient(to bottom,rgb(250 244 234/0),var(--background) 46%);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 24px 20px;text-align:center}
+.lock-disc{width:52px;height:52px;border-radius:999px;background:var(--accent);color:var(--rail);display:grid;place-items:center;margin-bottom:10px;transform:rotate(-6deg);box-shadow:var(--shadow-lg)}
+.lock h3{margin:0;font-size:22px;line-height:1.2}
+.lock p{margin:6px 0 0;font-size:15.5px;max-width:40ch}
+
+/* empty */
+.e-wrap{max-width:880px;margin:0 auto;padding:40px 24px 60px}
+.empty{margin-top:28px;display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 24px 56px;background:var(--card);border-radius:12px}
+.empty h2{margin:18px 0 6px;font-size:28px}
+.empty p{margin:0 0 22px;color:var(--muted-foreground);max-width:44ch}
+
+/* mobile */
+.m-rail .rail-in{padding:10px 16px}
+.m-rail img{width:34px;height:34px}
+.m-wrap{padding:24px 16px 96px}
+.m-wrap h1{margin:0;font-size:30px;line-height:1.1}
+.m-row{padding:16px 4px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 36px;gap:8px}
+.m-row h3{margin:0;font-size:16.5px;font-weight:600;line-height:1.35}
+.m-row p{margin:4px 0 6px;font-size:15px;color:var(--muted-foreground);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.m-cta{position:absolute;left:0;right:0;bottom:0;padding:12px 16px 22px;background:rgb(250 244 234/.92);backdrop-filter:blur(8px);border-top:1px solid var(--border)}
+.m-cta .btn{width:100%}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+  <symbol id="forward" viewBox="0 0 24 24"><polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></symbol>
+  <symbol id="msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+</svg>
+
+<div class="mk-page">
+  <div class="mk-intro">
+    <h1>Direction A, every screen</h1>
+    <p>All states the statement asks for, in the editorial ledger style: list with hover actions and infinite scroll, delete confirm and toasts, the create/edit form with validation, the takeover easter egg, empty state, end of list, errors and mobile. Tell me in the terminal what to change, screen by screen.</p>
+  </div>
+
+  <!-- 1 LIST -->
+  <section class="mk-sec">
+    <h2>1. Ticket list <span>SSR first page · hover row · loading the next page</span></h2>
+    <p>The whole row opens the edit page. Edit and delete appear on hover or keyboard focus; the date steps aside for them. Loading more shows quiet skeleton rows, never a spinner.</p>
+    <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-url">localhost:3000</span></div>
+      <div class="mk-vp surface-paper" style="height:820px">
+        <header class="rail surface-wood"><div class="rail-in"><img src="avatar.jpg" alt=""><div><div class="rail-title">Empório da Música</div><div class="rail-sub">Team desk</div></div></div></header>
+        <main class="a-wrap">
+          <div class="a-top">
+            <div>
+              <h1 class="display">Handed to you</h1>
+              <p class="tagline">Customers the agent couldn't finish with, waiting for a person.</p>
+              <div class="a-meta"><span class="badge"><svg class="i sm"><use href="#forward"/></svg>From the store agent</span><span class="muted tnum">24 open tickets</span></div>
+            </div>
+            <button class="btn btn-primary"><svg class="i"><use href="#plus"/></svg>New ticket <span class="kbd">N</span></button>
+          </div>
+          <article class="a-row"><div><h3>Piano tuning quote for a Yamaha U1</h3><p>Customer wants a home visit in Campo Grande next week and asked whether tuning and a light regulation fit in one visit. Prefers mornings.</p></div><div class="a-side"><span class="a-time tnum">Nov 7, 10:42 AM</span></div></article>
+          <article class="a-row hover"><div><h3>B string snapped on a new Giannini GF-1D</h3><p>Bought 12 days ago, order 4417. The B string broke on the first tune. Wants a replacement set shipped, not a refund.</p></div><div class="a-side"><div class="a-actions"><button class="icon-btn" aria-label="Take over conversation"><svg class="i"><use href="#msg"/></svg></button><button class="icon-btn on" aria-label="Edit"><svg class="i"><use href="#pencil"/></svg></button><button class="icon-btn danger" aria-label="Delete"><svg class="i"><use href="#trash"/></svg></button></div></div></article>
+          <article class="a-row"><div><h3>Trade-in value for a used Roland FP-30</h3><p>Wants to trade toward an FP-60X and sent photos of the keys and pedal. The agent can't price used gear.</p></div><div class="a-side"><span class="a-time tnum">Nov 6, 4:18 PM</span></div></article>
+          <article class="a-row"><div><h3>20 ukuleles for a public school</h3><p>Music teacher asking for an institutional discount and an invoice issued to the school's CNPJ.</p></div><div class="a-side"><span class="a-time tnum">Nov 6, 9:03 AM</span></div></article>
+          <article class="a-row"><div><h3>Delivery to Corumbá took 15 days</h3><p>The package arrived, but the customer wants to know why it took so long and whether shipping can be refunded.</p></div><div class="a-side"><span class="a-time tnum">Nov 5, 2:40 PM</span></div></article>
+          <div class="skel"><div><div class="bar" style="width:46%;height:16px"></div><div class="bar" style="width:82%;margin-top:10px"></div></div><div class="bar" style="width:110px"></div></div>
+          <div class="skel" style="opacity:.6"><div><div class="bar" style="width:38%;height:16px"></div><div class="bar" style="width:70%;margin-top:10px"></div></div><div class="bar" style="width:110px"></div></div>
+        </main>
+      </div>
+    </div>
+    <div class="mk-callouts"><span><b>Rail:</b> walnut with the 3px honey rule; store avatar, never the wordmark.</span><span><b>Hover:</b> walnut 4% tint plus a honey bar on the left edge.</span><span><b>Count:</b> needs <code>total</code> from <code>ticket.list</code> (one line in the store).</span></div>
+  </section>
+
+  <!-- 2 DELETE -->
+  <section class="mk-sec">
+    <h2>2. Delete <span>confirm dialog · success and error toasts</span></h2>
+    <p>The dialog names the ticket and focuses "Keep it" first, so Enter never deletes by accident. After confirming, the row fades and collapses, then a toast confirms.</p>
+    <div class="mk-row2">
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span></div>
+        <div class="mk-vp surface-paper" style="height:430px">
+          <main class="a-wrap" style="padding-top:24px">
+            <article class="a-row"><div><h3>Piano tuning quote for a Yamaha U1</h3><p>Customer wants a home visit in Campo Grande next week.</p></div><div class="a-side"><span class="a-time tnum">Nov 7, 10:42 AM</span></div></article>
+            <article class="a-row hover"><div><h3>B string snapped on a new Giannini GF-1D</h3><p>Bought 12 days ago, order 4417.</p></div><div class="a-side"></div></article>
+          </main>
+          <div class="backdrop"><div class="dialog" role="alertdialog">
+            <div class="d-head"><h2 class="display">Delete this ticket?</h2><p>"B string snapped on a new Giannini GF-1D" will be gone for good. The customer's conversation stays with the agent.</p></div>
+            <div class="d-actions" style="padding-top:18px"><button class="btn btn-secondary focus">Keep it</button><button class="btn btn-destructive"><svg class="i"><use href="#trash"/></svg>Delete ticket</button></div>
+          </div></div>
+        </div>
+      </div>
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span></div>
+        <div class="mk-vp surface-paper" style="height:430px">
+          <main class="a-wrap" style="padding-top:24px">
+            <article class="a-row"><div><h3>Piano tuning quote for a Yamaha U1</h3><p>Customer wants a home visit in Campo Grande next week.</p></div><div class="a-side"><span class="a-time tnum">Nov 7, 10:42 AM</span></div></article>
+            <article class="a-row leaving"><div><h3>B string snapped on a new Giannini GF-1D</h3><p>Deleting…</p></div><div class="a-side"><span class="a-time">Deleting…</span></div></article>
+            <article class="a-row"><div><h3>Trade-in value for a used Roland FP-30</h3><p>Wants to trade toward an FP-60X.</p></div><div class="a-side"><span class="a-time tnum">Nov 6, 4:18 PM</span></div></article>
+          </main>
+          <div style="position:absolute;left:0;right:0;bottom:22px;display:flex;flex-direction:column;align-items:center;gap:10px">
+            <div class="toast"><svg class="i ok"><use href="#check"/></svg>Ticket deleted.</div>
+            <div class="toast"><svg class="i bad"><use href="#alert"/></svg>Couldn't delete that ticket. Try again.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 FORM -->
+  <section class="mk-sec">
+    <h2>3. New and edit ticket <span>validation · server error · saving</span></h2>
+    <p>One page for both. Labels above fields, "Optional" on description; a character counter appears only past 80% of the limit. Left: submitted empty, so the title field explains itself and gets focus. Right: editing a ticket someone deleted meanwhile, so the server's NOT_FOUND shows as a banner.</p>
+    <div class="mk-row2">
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-url">localhost:3000/tickets/new</span></div>
+        <div class="mk-vp surface-paper">
+          <header class="rail surface-wood"><div class="rail-in"><img src="avatar.jpg" alt=""><div><div class="rail-title">Empório da Música</div><div class="rail-sub">Team desk</div></div></div></header>
+          <main class="f-wrap">
+            <div class="crumb"><svg class="i sm"><use href="#left"/></svg>All tickets</div>
+            <h1 class="display">New ticket</h1>
+            <p class="tagline">Log something the agent didn't catch.</p>
+            <div class="f-card">
+              <div class="field"><label class="lbl">Title</label><div class="input err focus"></div><span class="ferr"><svg class="i sm"><use href="#alert"/></svg>Give the ticket a title.</span></div>
+              <div class="field"><label class="lbl">Description <small>Optional</small></label><div class="textarea muted">What happened, and what does the customer need?</div></div>
+              <div class="f-actions"><button class="btn btn-ghost">Cancel</button><button class="btn btn-primary">Create ticket</button></div>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-url">localhost:3000/tickets/…/edit</span></div>
+        <div class="mk-vp surface-paper">
+          <header class="rail surface-wood"><div class="rail-in"><img src="avatar.jpg" alt=""><div><div class="rail-title">Empório da Música</div><div class="rail-sub">Team desk</div></div></div></header>
+          <main class="f-wrap">
+            <div class="crumb"><svg class="i sm"><use href="#left"/></svg>All tickets</div>
+            <h1 class="display">Edit ticket</h1>
+            <p class="tagline tnum">Handed over Nov 7, 9:15 AM</p>
+            <div class="f-card">
+              <div class="field"><label class="lbl">Title</label><div class="input">B string snapped on a new Giannini GF-1D</div></div>
+              <div class="field"><label class="lbl">Description <small>Optional</small></label><div class="textarea">Bought 12 days ago, order 4417. The B string broke on the first tune. Wants a replacement set shipped, not a refund. Within the 30-day defect window.</div></div>
+              <div class="banner" role="alert"><svg class="i"><use href="#alert"/></svg><div>This ticket no longer exists.<div class="muted">Someone may have deleted it. Go back to the list to see what's open.</div></div></div>
+              <div class="f-actions"><button class="btn btn-ghost">Cancel</button><button class="btn btn-primary pending">Saving…</button></div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 TAKEOVER -->
+  <section class="mk-sec">
+    <h2>4. Take over conversation <span>the easter egg</span></h2>
+    <p>The chat bubble icon on a row opens this. The first messages stay readable, the rest blurs under a tilted honey lock. One button closes it. This is the only screen with emoji, as agreed.</p>
+    <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span></div>
+      <div class="mk-vp surface-paper" style="height:640px">
+        <main class="a-wrap" style="padding-top:24px;opacity:.9">
+          <article class="a-row"><div><h3>Piano tuning quote for a Yamaha U1</h3><p>Customer wants a home visit.</p></div><div class="a-side"><span class="a-time tnum">Nov 7, 10:42 AM</span></div></article>
+          <article class="a-row hover"><div><h3>B string snapped on a new Giannini GF-1D</h3><p>Bought 12 days ago, order 4417.</p></div><div class="a-side"></div></article>
+        </main>
+        <div class="backdrop"><div class="dialog wide">
+          <div class="d-head"><h2 class="display">B string snapped on a new Giannini GF-1D</h2><p>Conversation between the customer and the store agent.</p><button class="icon-btn d-close" aria-label="Close"><svg class="i"><use href="#x"/></svg></button></div>
+          <div class="d-body">
+            <div class="thread">
+              <div class="bub cust">Oi, comprei um violão de vocês e a corda Si arrebentou na primeira afinada</div>
+              <div class="bub agent">Poxa, que chato. Me passa o número do pedido que eu já vejo aqui?</div>
+              <div class="bub cust blurred">4417</div>
+              <div class="bub agent blurred">Achei. Está dentro dos 30 dias de defeito, então vou passar para a equipe trocar o encordoamento.</div>
+              <div class="divider blurred">Agent handed off · 9:15 AM</div>
+              <div class="lock">
+                <div class="lock-disc"><svg class="i" style="width:24px;height:24px"><use href="#lock"/></svg></div>
+                <h3 class="display">🔒 Live handoff</h3>
+                <p>Designed, not built yet. Unlocks right after this candidate gets hired. 😉</p>
+              </div>
+            </div>
+          </div>
+          <div class="d-actions"><button class="btn btn-secondary">Got it</button></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 EMPTY / END / ERRORS -->
+  <section class="mk-sec">
+    <h2>5. Empty, end of list and errors</h2>
+    <p>Empty state invites the first ticket. The end of the list closes with a quiet line. If the next page fails, the list stays and offers a retry. A page that can't load at all shows the error screen with "Try again".</p>
+    <div class="mk-row2">
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span></div>
+        <div class="mk-vp surface-paper" style="height:560px">
+          <main class="e-wrap">
+            <div class="a-top"><div><h1 class="display" style="margin:0;font-size:40px;line-height:1.1">Handed to you</h1><p class="tagline" style="margin:6px 0 0;font-size:18px">Customers the agent couldn't finish with.</p></div></div>
+            <div class="empty">
+              <svg viewBox="0 0 120 120" width="96" height="96" fill="none" stroke="#3B2A1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M60 14v38"/><circle cx="60" cy="74" r="26" fill="#C98A2B" fill-opacity=".35"/><circle cx="60" cy="74" r="9" fill="#FAF4EA"/><path d="M52 14h16"/><path d="M54 22h12"/><path d="M38 106h44"/></svg>
+              <h2 class="display">Quiet in the shop</h2>
+              <p>No tickets yet. When the agent hands a customer over, they'll land here.</p>
+              <button class="btn btn-primary"><svg class="i"><use href="#plus"/></svg>New ticket</button>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span></div>
+          <div class="mk-vp surface-paper" style="height:250px"><main class="a-wrap" style="padding-top:12px">
+            <article class="a-row"><div><h3>Is the Fender Player Strat in stock?</h3><p>The site shows it, but the agent's stock check timed out.</p></div><div class="a-side"><span class="a-time tnum">Nov 1, 8:12 AM</span></div></article>
+            <div class="list-end">That's every ticket. The agent is still on shift.</div>
+          </main></div>
+        </div>
+        <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span></div>
+          <div class="mk-vp surface-paper" style="height:262px"><main class="a-wrap" style="padding-top:12px">
+            <article class="a-row"><div><h3>Delivery to Corumbá took 15 days</h3><p>The package arrived, but the customer wants to know why.</p></div><div class="a-side"><span class="a-time tnum">Nov 5, 2:40 PM</span></div></article>
+            <div class="inline-fail"><span><svg class="i"><use href="#alert"/></svg>Couldn't load more tickets.</span><button class="btn btn-secondary" style="height:36px;padding:0 14px"><svg class="i sm"><use href="#refresh"/></svg>Try again</button></div>
+          </main></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 MOBILE + 404 -->
+  <section class="mk-sec">
+    <h2>6. Mobile and not found</h2>
+    <p>On phones the rows stack, actions move to a menu button that is always visible, and "New ticket" becomes a sticky bar at the bottom. Two 404s following the GOV.UK "Page not found" pattern: plain title as the H1 and the tab title, no "404" jargon, no "oops" or puns, no red warning text, no blame, one way forward. Both return a real HTTP 404. The ticket one comes from the edit route's own not-found; any other URL gets the root one.</p>
+    <div style="display:grid;grid-template-columns:390px 1fr;gap:32px;align-items:start">
+      <div class="mk-phone"><div class="mk-vp surface-paper" style="height:760px">
+        <header class="rail surface-wood m-rail"><div class="rail-in"><img src="avatar.jpg" alt=""><div><div class="rail-title">Empório da Música</div><div class="rail-sub">Team desk</div></div></div></header>
+        <main class="m-wrap">
+          <h1 class="display">Handed to you</h1>
+          <div class="a-meta" style="margin-top:10px"><span class="badge"><svg class="i sm"><use href="#forward"/></svg>From the store agent</span></div>
+          <div style="margin-top:14px;border-top:1px solid var(--border)">
+            <div class="m-row"><div><h3>Piano tuning quote for a Yamaha U1</h3><p>Customer wants a home visit in Campo Grande next week and asked whether tuning fits.</p><span class="a-time tnum">Nov 7, 10:42 AM</span></div><button class="icon-btn" aria-label="Actions"><svg class="i"><use href="#more"/></svg></button></div>
+            <div class="m-row"><div><h3>B string snapped on a new Giannini GF-1D</h3><p>Bought 12 days ago, order 4417. The B string broke on the first tune.</p><span class="a-time tnum">Nov 7, 9:15 AM</span></div><button class="icon-btn" aria-label="Actions"><svg class="i"><use href="#more"/></svg></button></div>
+            <div class="m-row"><div><h3>Trade-in value for a used Roland FP-30</h3><p>Wants to trade toward an FP-60X and sent photos.</p><span class="a-time tnum">Nov 6, 4:18 PM</span></div><button class="icon-btn" aria-label="Actions"><svg class="i"><use href="#more"/></svg></button></div>
+          </div>
+        </main>
+        <div class="m-cta"><button class="btn btn-primary"><svg class="i"><use href="#plus"/></svg>New ticket</button></div>
+      </div></div>
+      <div style="display:flex;flex-direction:column;gap:24px">
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-url">localhost:3000/tickets/abc/edit</span><span class="muted" style="margin-left:auto;font-size:13px">tab: Ticket not found · Empório</span></div>
+        <div class="mk-vp surface-paper">
+          <header class="rail surface-wood"><div class="rail-in"><img src="avatar.jpg" alt=""><div><div class="rail-title">Empório da Música</div><div class="rail-sub">Team desk</div></div></div></header>
+          <main style="max-width:42rem;margin:0 auto;padding:56px 24px 64px">
+            <h1 class="display" style="font-size:36px;line-height:1.15;margin:0">Ticket not found</h1>
+            <p style="margin:12px 0 0;max-width:52ch">It may have been deleted, or the link may be incomplete.</p>
+            <p style="margin:24px 0 0"><a class="btn-link" style="font-weight:600">See all tickets</a></p>
+          </main>
+        </div>
+      </div>
+      <div class="mk-browser"><div class="mk-bar"><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-dot"></span><span class="mk-url">localhost:3000/anything-else</span><span class="muted" style="margin-left:auto;font-size:13px">tab: Page not found · Empório</span></div>
+        <div class="mk-vp surface-paper">
+          <header class="rail surface-wood"><div class="rail-in"><img src="avatar.jpg" alt=""><div><div class="rail-title">Empório da Música</div><div class="rail-sub">Team desk</div></div></div></header>
+          <main style="max-width:42rem;margin:0 auto;padding:56px 24px 64px">
+            <h1 class="display" style="font-size:36px;line-height:1.15;margin:0">Page not found</h1>
+            <p style="margin:12px 0 0;max-width:52ch">If you typed the web address, check it is correct.</p><p style="margin:12px 0 0;max-width:52ch">If you pasted the web address, check you copied the entire address.</p>
+            <p style="margin:24px 0 0"><a class="btn-link" style="font-weight:600">Go to tickets</a></p>
+          </main>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>
