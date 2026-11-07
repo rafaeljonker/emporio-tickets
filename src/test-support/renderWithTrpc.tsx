@@ -1,15 +1,19 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createTRPCClient, localLink } from '@trpc/client';
-import { renderHook } from '@testing-library/react';
-import { Suspense, type ReactNode } from 'react';
+import { render, renderHook } from '@testing-library/react';
+import { Suspense, type ReactElement, type ReactNode } from 'react';
 import { appRouter, type AppRouter } from '@/server/root';
 import { createTicketStore, type TicketStore } from '@/server/tickets/store';
 import { TRPCProvider } from '@/trpc/client';
 
-/** Renders a hook against the real router and a fresh store, with no network. */
-export function renderWithTrpc<T>(hook: () => T, opts: { store?: TicketStore; queryClient?: QueryClient } = {}) {
+type Options = { store?: TicketStore; queryClient?: QueryClient };
+
+/** Providers wired to the real router and a fresh store, with no network. */
+function setup(opts: Options) {
   const store = opts.store ?? createTicketStore();
-  const queryClient = opts.queryClient ?? new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 30_000 }, mutations: { retry: false } } });
+  const queryClient =
+    opts.queryClient ??
+    new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: 30_000 }, mutations: { retry: false } } });
   const trpcClient = createTRPCClient<AppRouter>({
     links: [localLink({ router: appRouter, createContext: () => Promise.resolve({ store }) })],
   });
@@ -20,5 +24,15 @@ export function renderWithTrpc<T>(hook: () => T, opts: { store?: TicketStore; qu
       </TRPCProvider>
     </QueryClientProvider>
   );
+  return { store, queryClient, wrapper };
+}
+
+export function renderWithTrpc<T>(hook: () => T, opts: Options = {}) {
+  const { store, queryClient, wrapper } = setup(opts);
   return { ...renderHook(hook, { wrapper }), queryClient, store };
+}
+
+export function renderUiWithTrpc(ui: ReactElement, opts: Options = {}) {
+  const { store, queryClient, wrapper } = setup(opts);
+  return { ...render(ui, { wrapper }), queryClient, store };
 }
