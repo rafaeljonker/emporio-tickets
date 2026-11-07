@@ -21,3 +21,8 @@ export function toUserMessage(error: unknown): string {
   if (data.code === 'BAD_REQUEST') return 'Check the highlighted fields and try again.';
   return FALLBACK;
 }
+
+/** True when the server answered NOT_FOUND (the thing is already gone). */
+export function isNotFound(error: unknown): boolean {
+  return error instanceof TRPCClientError && (error.data as ErrorData | undefined)?.code === 'NOT_FOUND';
+}

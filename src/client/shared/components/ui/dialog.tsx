@@ -65,4 +65,6 @@ function DialogDescription({ className, ...props }: React.ComponentProps<typeof 
   )
 }
 
-export { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger }
+const DialogClose = DialogPrimitive.Close
+
+export { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger }

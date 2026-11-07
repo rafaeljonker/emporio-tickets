@@ -7,6 +7,9 @@ import { buildTickets } from '@/test-support/ticketFactory';
 const state: { current: UseTicketListResult } = { current: { kind: 'empty' } };
 
 vi.mock('@/client/tickets/useCases/list/useTicketList', () => ({ useTicketList: () => state.current }));
+vi.mock('@/client/tickets/useCases/list/useTicketRow', () => ({
+  useTicketRow: () => ({ isConfirmOpen: false, setConfirmOpen: vi.fn(), isDeleting: false, isRemoving: false, handleDelete: vi.fn() }),
+}));
 
 const contentState = (overrides: Partial<Extract<UseTicketListResult, { kind: 'content' }>> = {}): UseTicketListResult => ({
   kind: 'content',

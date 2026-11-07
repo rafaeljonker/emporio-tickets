@@ -6,12 +6,11 @@ import { useTicketRow } from '@/client/tickets/useCases/list/useTicketRow';
 import { createTicketStore, type TicketStore } from '@/server/tickets/store';
 import { installIntersectionObserver } from '@/test-support/intersectionObserver';
 import { renderWithTrpc } from '@/test-support/renderWithTrpc';
-import { buildTickets } from '@/test-support/ticketFactory';
+import { buildTicket, buildTickets } from '@/test-support/ticketFactory';
 
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
-const target = buildTickets(25)[0];
-if (!target) throw new Error('fixture');
+const target = buildTicket();
 
 function ids(list: UseTicketListResult | undefined) {
   return list?.kind === 'content' ? list.tickets.map((t) => t.id) : [];
