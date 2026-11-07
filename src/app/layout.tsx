@@ -3,6 +3,7 @@ import { Fraunces, Source_Sans_3 } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { AppRail } from '@/client/shared/components/AppRail';
 import { Toaster } from '@/client/shared/components/ui/sonner';
+import { TRPCReactProvider } from '@/trpc/client';
 import './globals.css';
 
 // next/font self-hosts both families at build time (same intent as the brand's Fontsource rule).
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en" className={`${fraunces.variable} ${sourceSans.variable}`}>
       <body className="surface-paper min-h-dvh">
         <AppRail />
-        {children}
+        <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster position="bottom-center" />
       </body>
     </html>
