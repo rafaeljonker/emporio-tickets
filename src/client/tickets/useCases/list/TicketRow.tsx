@@ -40,11 +40,12 @@ export function TicketRow({ ticket }: TicketRowProps) {
             href={editHref(ticket.id)}
             // Up to 1,000 rows: no viewport prefetch per row.
             prefetch={false}
-            className="block py-[18px] pr-[132px] pl-3.5 md:pr-[170px]"
+            className="block py-[18px] pr-3.5 pl-3.5 md:pr-[170px]"
           >
-            <span className="block text-[17px] leading-snug font-semibold [overflow-wrap:anywhere]">{ticket.title}</span>
+            {/* On phones only the title shares its line with the actions. */}
+            <span className="block min-h-9 pr-[116px] text-[17px] leading-snug font-semibold [overflow-wrap:anywhere] md:min-h-0 md:pr-0">{ticket.title}</span>
             {ticket.description && (
-              <span className="mt-1 line-clamp-2 block max-w-[64ch] text-[15px] text-muted-foreground [overflow-wrap:anywhere]">
+              <span className="mt-1 line-clamp-2 max-w-[64ch] text-[15px] text-muted-foreground [overflow-wrap:anywhere]">
                 {ticket.description}
               </span>
             )}
