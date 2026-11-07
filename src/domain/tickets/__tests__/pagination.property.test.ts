@@ -80,5 +80,6 @@ describe('paginate invariants', () => {
       ),
       { seed: 20261107, numRuns: 200 },
     );
-  });
+    // 200 traversals of up to 1,000 tickets: seconds, not milliseconds, on a busy CI runner.
+  }, 60_000);
 });
