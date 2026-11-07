@@ -75,5 +75,35 @@ test('a long title without spaces wraps instead of overflowing', async ({ page }
   expect(overflow).toBeLessThanOrEqual(0);
   const row = page.getByRole('listitem').first().locator('a').first();
   expect(await row.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+  // The delete confirm quotes the title: it must wrap inside the dialog too.
+  await page.getByRole('listitem').first().hover();
+  await page.getByRole('button', { name: `Delete ${title}` }).click();
+  const dialog = page.getByRole('alertdialog');
+  expect(await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+  await page.getByRole('button', { name: 'Keep it' }).click();
   await deleteTicket(page, title);
+});
+
+test('focus stays in the list after deleting with the keyboard', async ({ page }) => {
+  const title = `Focus ${Date.now()}`;
+  await page.goto('/tickets/new');
+  await page.getByLabel('Title').fill(title);
+  await page.getByRole('button', { name: 'Create ticket' }).click();
+  await expect(page.getByRole('listitem').first()).toContainText(title);
+  await page.getByRole('button', { name: `Delete ${title}` }).focus();
+  await page.keyboard.press('Enter');
+  await page.getByRole('button', { name: 'Delete ticket' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('listitem').filter({ hasText: title })).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => document.activeElement?.id ?? '')).toMatch(/^ticket-/);
+});
+
+test('the header counts open tickets and follows deletes', async ({ page }) => {
+  const title = `Count ${Date.now()}`;
+  await page.goto('/tickets/new');
+  await page.getByLabel('Title').fill(title);
+  await page.getByRole('button', { name: 'Create ticket' }).click();
+  await expect(page.getByText('26 open tickets')).toBeVisible();
+  await deleteTicket(page, title);
+  await expect(page.getByText('25 open tickets')).toBeVisible();
 });
