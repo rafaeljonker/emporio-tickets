@@ -42,6 +42,7 @@ export function TicketForm(props: TicketFormProps) {
                 {...field}
                 id="ticket-title"
                 autoComplete="off"
+                placeholder="e.g. B string snapped on a new Giannini"
                 aria-invalid={fieldErrors.title ? true : undefined}
                 aria-describedby={fieldErrors.title ? 'ticket-title-error' : undefined}
                 className="aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive"
