@@ -28,6 +28,8 @@ export default tseslint.config(
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       'react/no-danger': 'error',
+      // Object shapes and unions are both written as `type`; one style is enough.
+      '@typescript-eslint/consistent-type-definitions': 'off',
     },
   },
   {
