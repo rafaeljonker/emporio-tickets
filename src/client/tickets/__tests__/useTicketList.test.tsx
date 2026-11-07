@@ -49,7 +49,7 @@ describe('useTicketList', () => {
 
   it('loads one page per visibility trigger and stops at the end', async () => {
     const base = createTicketStore({ seed: buildTickets(25) });
-    const listSpy = vi.fn(base.list);
+    const listSpy = vi.fn((input: Parameters<TicketStore["list"]>[0]) => base.list(input));
     const { list, attach } = renderList({ ...base, list: listSpy });
     await waitFor(() => expect(content(list).tickets).toHaveLength(10));
     attach();
