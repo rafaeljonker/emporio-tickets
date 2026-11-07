@@ -8,7 +8,7 @@ Design: [docs/superpowers/specs/2026-11-07-emporio-tickets-design.md](docs/super
 - `pnpm i` then `pnpm dev` (http://localhost:3000).
 - `pnpm check`: route types, lint, typecheck, unit and integration tests. Green before every commit, except the `(red)` half of a TDD pair.
 - `pnpm test` / `pnpm test:watch`: Vitest (`node` project for `*.test.ts`, `jsdom` for `*.test.tsx`).
-- `pnpm test:e2e`: Playwright against `pnpm build && pnpm start`.
+- `pnpm test:e2e`: Playwright against `pnpm build && pnpm start --port 3100` (a dedicated port, so a dev server on :3000 is never reused). Run `pnpm exec playwright install chromium` once.
 - `pnpm build`, `pnpm start`.
 
 ## Structure
