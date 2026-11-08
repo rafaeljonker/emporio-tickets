@@ -9,6 +9,7 @@ The board page is a Server Component that awaits `prefetchInfiniteQuery` on a pe
 ## Consequences
 - The first page is in the HTML (an e2e test checks it with JavaScript disabled) and no first-page request fires on load (another e2e test).
 - Later pages, deletes and form submissions run client-side.
+- Leaving a ticket opened from the board (Back, Cancel, or saving an edit) is a history step: Next's back/forward cache reuses the old page payload, hydration keeps the newer cached pages, and the scroll position returns. A forward visit to `/` would hydrate a newer first page over them, so only a create (new ticket on top) starts the board again.
 - Unknown ticket ids call `notFound()` before rendering, so they return a real 404.
 
 ## Alternatives

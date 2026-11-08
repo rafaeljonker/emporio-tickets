@@ -333,3 +333,5 @@ Seed ticket wording beyond the newest three, skeleton proportions, exact spacing
 - **Paper grain** is a pre-rendered PNG tile: the SVG `feTurbulence` filter cost ~4 s of blocking time on Lighthouse's throttled CPU. **Fonts** load only the Latin subset and Fraunces without the WONK axis (580 KB → 293 KB).
 - **Row links** don't prefetch (up to 1,000 rows); **e2e** runs on port 3100.
 - `next>postcss` is overridden to `^8.5.18` to clear two high advisories pinned by Next 15.5.
+- **Returning to the board keeps your place** (owner request after review): opening a ticket from the board marks it; Back, Cancel and saving an edit then step back in history, so the loaded pages and scroll position return. Saving an edit patches the row in the cache instead of `removeQueries`; only a create starts the board again from a fresh first page. A ticket opened from a pasted link still goes to `/`. Proven by three e2e tests.
+- **Rows highlight on keyboard focus only** (`:focus-visible`): after a mouse delete, focus moves to the neighbouring row for keyboard users, and `focus-within` would have lit it as a second selected row.

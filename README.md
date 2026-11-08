@@ -58,7 +58,7 @@ src/
 1. `GET /` runs a server component that awaits `ticket.list` in-process and renders the first 10 tickets into the HTML.
 2. The browser hydrates that page from the dehydrated cache, so it doesn't fetch the first page again.
 3. Scrolling near the end loads the next page through `/api/trpc` (batched GET). Delete and save are POST mutations.
-4. Deleting removes the row from every cached page without refetching. Saving drops the cached list and goes back to a fresh server-rendered board.
+4. Deleting removes the row from every cached page without refetching. Saving an edit patches the row in the cache and steps back in history, so you land where you were with the same pages loaded; Cancel and the browser's Back do the same. Creating starts the board again from a fresh server-rendered first page, with the new ticket on top.
 
 **Pagination.** Newest first (`createdAt`, then `id` as tie-breaker), keyset cursors (`base64url` of `{ v, t, id }`), `limit + 1` to know if another page exists. Every ticket that exists for the whole scroll appears exactly once; new tickets show up on the next refresh; deleted ones never come back. A malformed cursor is a 400, never a silent restart.
 
@@ -90,7 +90,7 @@ The design, the research behind each choice (with sources) and the implementatio
 | Store and router | Result values, the error map, every procedure's contract, the 1,000-ticket cap |
 | HTTP | Status codes, the batch limit, form-encoded and `text/plain` mutations rejected, no stack in production |
 | View models and components | Infinite scroll guards, delete and save flows, double clicks, error copy, every rendered state |
-| End to end | The list is in the HTML with JavaScript off; no duplicate first-page fetch; create, edit, delete; 404s; security headers; long titles wrap |
+| End to end | The list is in the HTML with JavaScript off; no duplicate first-page fetch; create, edit, delete; Back, Cancel and Save return to the same place; 404s; security headers; long titles wrap |
 
 ## Performance and security
 
