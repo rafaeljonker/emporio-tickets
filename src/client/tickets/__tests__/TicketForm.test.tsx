@@ -2,16 +2,22 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { toast } from 'sonner';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TicketForm } from '@/client/tickets/useCases/form/TicketForm';
+import { markCameFromBoard } from '@/client/tickets/useCases/returnToBoard';
+import { useTicketList } from '@/client/tickets/useCases/list/useTicketList';
+import { renderWithTrpc } from '@/test-support/renderWithTrpc';
+import { installIntersectionObserver } from '@/test-support/intersectionObserver';
 import { createTicketStore } from '@/server/tickets/store';
 import { renderUiWithTrpc } from '@/test-support/renderWithTrpc';
 import { buildTicket, buildTickets } from '@/test-support/ticketFactory';
 
 const push = vi.fn();
-vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
+const back = vi.fn();
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push, back }) }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 beforeEach(() => {
   push.mockClear();
+  back.mockClear();
   vi.mocked(toast.success).mockClear();
 });
 
@@ -86,6 +92,36 @@ describe('TicketForm (edit)', () => {
     renderUiWithTrpc(<TicketForm mode="edit" ticket={ticket} />, { store: createTicketStore() });
     fireEvent.click(submit(/save changes/i));
     expect((await screen.findByRole('alert')).textContent).toContain('This ticket no longer exists.');
+    expect(push).not.toHaveBeenCalled();
+  });
+});
+
+describe('TicketForm (back to the board)', () => {
+  it('after an edit from the board, updates the cached row and goes back instead of reloading', async () => {
+    installIntersectionObserver();
+    const tickets = buildTickets(25);
+    const ticket = tickets[3];
+    if (!ticket) throw new Error('fixture');
+    const store = createTicketStore({ seed: tickets });
+    const board = renderWithTrpc(() => useTicketList(), { store });
+    await waitFor(() => expect(board.result.current?.kind).toBe('content'));
+    const removeQueries = vi.spyOn(board.queryClient, 'removeQueries');
+    markCameFromBoard();
+    renderUiWithTrpc(<TicketForm mode="edit" ticket={ticket} />, { store, queryClient: board.queryClient });
+    fireEvent.change(title(), { target: { value: 'Renamed in place' } });
+    fireEvent.click(submit(/save changes/i));
+    await waitFor(() => expect(back).toHaveBeenCalled());
+    expect(push).not.toHaveBeenCalled();
+    expect(removeQueries).not.toHaveBeenCalled();
+    const list = board.result.current;
+    expect(list?.kind === 'content' && list.tickets.find((t) => t.id === ticket.id)?.title).toBe('Renamed in place');
+  });
+
+  it('cancel goes back when the user came from the board', () => {
+    markCameFromBoard();
+    renderUiWithTrpc(<TicketForm mode="create" />);
+    fireEvent.click(screen.getByRole('link', { name: 'Cancel' }));
+    expect(back).toHaveBeenCalled();
     expect(push).not.toHaveBeenCalled();
   });
 });
