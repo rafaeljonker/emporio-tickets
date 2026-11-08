@@ -19,11 +19,11 @@ function FieldMessage({ id, message }: { id: string; message: string | undefined
 }
 
 export function TicketForm(props: TicketFormProps) {
-  const { control, heading, tagline, fieldErrors, counters, formError, isSaving, submitLabel, onSubmit } = useTicketForm(props);
+  const { control, heading, tagline, fieldErrors, counters, formError, handleBackClick, isSaving, submitLabel, onSubmit } = useTicketForm(props);
 
   return (
     <main className="mx-auto max-w-[36rem] px-4 pt-6 pb-12 md:px-6 md:pt-9">
-      <Link href="/" className="mb-3.5 inline-flex items-center gap-1.5 rounded-full text-[15px] text-muted-foreground hover:text-foreground">
+      <Link href="/" onClick={handleBackClick} className="mb-3.5 inline-flex items-center gap-1.5 rounded-full text-[15px] text-muted-foreground hover:text-foreground">
         <ChevronLeftIcon className="size-4" strokeWidth={1.75} aria-hidden="true" />
         All tickets
       </Link>
@@ -83,7 +83,7 @@ export function TicketForm(props: TicketFormProps) {
           </div>
         )}
         <div className="mt-6 flex justify-end gap-2">
-          <Link href="/" className={buttonVariants({ variant: 'ghost' })}>
+          <Link href="/" onClick={handleBackClick} className={buttonVariants({ variant: 'ghost' })}>
             Cancel
           </Link>
           <Button type="submit" disabled={isSaving}>

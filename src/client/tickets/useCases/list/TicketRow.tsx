@@ -13,6 +13,7 @@ import {
 import { Button } from '@/client/shared/components/ui/button';
 import type { Ticket } from '@/domain/tickets/ticket';
 import { TicketDate } from '../../ui/TicketDate';
+import { markCameFromBoard } from '../returnToBoard';
 import { TakeoverDialog } from './TakeoverDialog';
 import { useTicketRow } from './useTicketRow';
 
@@ -40,6 +41,7 @@ export function TicketRow({ ticket }: TicketRowProps) {
             href={editHref(ticket.id)}
             // Up to 1,000 rows: no viewport prefetch per row.
             prefetch={false}
+            onClick={markCameFromBoard}
             className="block py-[18px] pr-3.5 pl-3.5 md:pr-[170px]"
           >
             {/* On phones only the title shares its line with the actions. */}
@@ -62,7 +64,7 @@ export function TicketRow({ ticket }: TicketRowProps) {
           <div className="absolute top-3 right-2 flex gap-0.5 md:opacity-0 md:group-has-[:focus-visible]:opacity-100 md:group-hover:opacity-100 [@media(hover:none)]:opacity-100">
             <TakeoverDialog title={ticket.title} />
             <Button asChild variant="ghost" size="icon" className={iconButton}>
-              <Link href={editHref(ticket.id)} prefetch={false} aria-label={`Edit ${ticket.title}`}>
+              <Link href={editHref(ticket.id)} prefetch={false} onClick={markCameFromBoard} aria-label={`Edit ${ticket.title}`}>
                 <PencilIcon className="size-5" strokeWidth={1.75} aria-hidden="true" />
               </Link>
             </Button>

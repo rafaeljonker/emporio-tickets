@@ -121,3 +121,44 @@ test('after a mouse delete only the hovered row is highlighted', async ({ page }
     .evaluateAll((rows) => rows.filter((row) => getComputedStyle(row).boxShadow !== 'none').length);
   expect(highlighted).toBe(1);
 });
+
+const rowLink = (page: Page, title: string) =>
+  page.getByRole('listitem').filter({ hasText: title }).locator('a[id^="ticket-"]');
+
+async function openDeepTicket(page: Page, title: string) {
+  await page.goto('/');
+  const status = page.getByRole('status');
+  for (let i = 0; i < 10 && (await status.textContent()) !== 'Showing 25 of 25 tickets'; i += 1) {
+    await page.mouse.wheel(0, 4000);
+    await page.waitForTimeout(300);
+  }
+  await expect(status).toHaveText('Showing 25 of 25 tickets');
+  await rowLink(page, title).click();
+  await expect(page.getByRole('heading', { name: 'Edit ticket' })).toBeVisible();
+}
+
+async function expectBackInPlace(page: Page, title: string) {
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('status')).toHaveText('Showing 25 of 25 tickets');
+  await expect(rowLink(page, title)).toBeInViewport();
+}
+
+test('browser back returns to the same place in the list', async ({ page }) => {
+  await openDeepTicket(page, 'Accessibility question about the store');
+  await page.goBack();
+  await expectBackInPlace(page, 'Accessibility question about the store');
+});
+
+test('cancel returns to the same place in the list', async ({ page }) => {
+  await openDeepTicket(page, 'Customer wants to sell a vintage Giannini');
+  await page.getByRole('link', { name: 'Cancel' }).click();
+  await expectBackInPlace(page, 'Customer wants to sell a vintage Giannini');
+});
+
+test('saving an edit updates the row in place', async ({ page }) => {
+  await openDeepTicket(page, 'Capo missing from a bundle');
+  await page.getByLabel('Title').fill('Capo missing from the Starter bundle');
+  await page.getByRole('button', { name: 'Save changes' }).click();
+  await expect(page.getByText('Ticket updated.')).toBeVisible();
+  await expectBackInPlace(page, 'Capo missing from the Starter bundle');
+});
